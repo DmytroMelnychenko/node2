@@ -1,20 +1,20 @@
 const fs = require('fs/promises');
 const path = require('path')
 
-const sortBoysFolder = async () => {
+const sortBoysFolder = async (readFolder, gender, writeFolder) => {
   try {
-     const folderPath = path.join(__dirname, 'boys');
+     const folderPath = path.join(__dirname, readFolder);
      const files =  await fs.readdir(folderPath);
 
      for (const  file of files) {
         const pathToFile = path.join(folderPath, file);
 
         const data = await fs.readFile(pathToFile);
-
+         console.log(data)
         const user = JSON.parse(data.toString());
 
-         if (user.gender !== 'male') {
-          await fs.rename(pathToFile, path.join(__dirname, 'girls', file));
+         if (user.gender !== gender) {
+          await fs.rename(pathToFile, path.join(__dirname, writeFolder, file));
          }
      }
 
@@ -24,4 +24,5 @@ const sortBoysFolder = async () => {
 
 }
 
-sortBoysFolder('boys', 'male', );
+sortBoysFolder('boys', 'male','girls');
+sortBoysFolder('girls', 'female','boys');
